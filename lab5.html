@@ -14,35 +14,28 @@
     <script src="lab5.js"></script>
   </head>
   <body>
-    <div id="myBoard"></div>
-    <div id="aiBoard"></div>
+    <div></div>
+    <div id="myBoard" style="float: left"></div>
+    <div id="aiBoard" style="float: left"></div>
     <script>
-      var plansza = [
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
+      var statki = [
+        ['B2','C2','D2','E2'],
+        ['G2','H2'],
+        ['A5'],
+        ['C4','C5','C6'],
+        ['F4'],
+        ['E6','F6','G6'],
+        ['I5','I6','I7'],
+        ['G8'],
+        ['B9','C9'],
+        ['F10','G10'],
+        ['J10']
       ]
-      var planszaAI = [
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-      ]
-      createHTMLBoard("myBoard","plansza")
-      createHTMLBoard("aiBoard","planszaAI")
+      var plansza = generateBoard(statki)
+      var planszaAI = generateBoard(statki)
+      createHTMLBoard("myBoard","plansza", "statki")
+      colorBoard("myBoard",plansza)
+      createHTMLBoard("aiBoard","planszaAI", "statki", true)
     </script>
   </body>
 </html>
