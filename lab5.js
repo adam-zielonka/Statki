@@ -87,17 +87,30 @@ function getBoardName(id, y){
    return id.substring(0, id.length - (y == 10 ? 3 : 2))
 }
 
-function fire(s,x,y,plansza,ships, opponent){
-  switch (plansza[x-1][y-1]) {
-    case 0:
-      plansza[x-1][y-1] = 2
-      break;
-    case 1:
-      plansza[x-1][y-1] = 3
-      break;
+function fire(s,x,y,plansza, ships, opponent){
+  if(!endGame) {
+    var playAgain = true
+    switch (plansza[x-1][y-1]) {
+      case 0:
+        plansza[x-1][y-1] = 2
+        playAgain = false
+        // if(!opponent) {
+        //   ai.last = undefined
+        // }
+        break;
+      case 1:
+        plansza[x-1][y-1] = 3
+        if(!opponent) {
+          ai.last = []
+          ai.last[0] = x-1
+          ai.last[1] = y-1
+        }
+        break;
+    }
+    endGame = shipsStatus(ships,plansza,opponent)
+    colorBoard(getBoardName(s.id,y),plansza,opponent);
+    if((!playAgain && opponent) || (playAgain && !opponent)) playAI()
   }
-  var win = shipsStatus(ships,plansza)
-  colorBoard(getBoardName(s.id,y),plansza,opponent);
 }
 
 function getXY(id) {
@@ -114,16 +127,28 @@ function listShips(ships){
   }
 }
 
-function shipsStatus(ships, board){
+var endGame = false
+
+function shipsStatus(ships, board, opponent){
   var win = true
+  var counter = 0
   for (var ship of ships) {
     var test = true;
     for (var mast of ship) {
       var xy = getXY(mast)
       if(board[xy[0]][xy[1]] == 1) test = false
     }
-    if(test) shipDown(ship, board)
+    if(test) {
+      shipDown(ship, board)
+      counter++
+    }
     else win = false
+  }
+  if(!opponent){
+    if(ai.counter != counter){
+      ai.last = undefined
+      ai.counter = counter
+    }
   }
   return win
 }
@@ -160,4 +185,52 @@ function generateBoard(ships) {
     }
   }
   return board
+}
+
+function pushLast(){}
+
+var ai = {}
+function setAI(boardName, board, ships){
+  ai.boardName = boardName
+  ai.board = board
+  ai.ships = ships
+  ai.counter = 0
+}
+
+function around(i, j, board, counter=0) {
+  var x = getRandom(1, 5)
+  switch (x) {
+    case 1: if(i-1>=0 && (board[i-1][j] == 0 || board[i-1][j] == 1)) return [i-1,j]
+    case 2: if(i+1<10 && (board[i+1][j] == 0 || board[i+1][j] == 1)) return [i+1,j]
+    case 3: if(j-1>=0 && (board[i][j-1] == 0 || board[i][j-1] == 1)) return [i,j-1]
+    case 4: if(j+1<10 && (board[i][j+1] == 0 || board[i][j+1] == 1)) return [i,j+1]
+    default: {
+      if(i-1>=0 && (board[i-1][j] == 0 || board[i-1][j] == 1)) return [i-1,j]
+      if(i+1<10 && (board[i+1][j] == 0 || board[i+1][j] == 1)) return [i+1,j]
+      if(j-1>=0 && (board[i][j-1] == 0 || board[i][j-1] == 1)) return [i,j-1]
+      // if(i-1>=0 && (board[i-1][j] == 3)) return [i-1,j]
+      // if(i+1<10 && (board[i+1][j] == 3)) return [i+1,j]
+      // if(j-1>=0 && (board[i][j-1] == 3)) return [i,j-1]
+      // if(j+1<10 && (board[i][j+1] == 3)) return [i,j+1]
+      return [getRandom(1, 11), getRandom(1, 11)]
+    }
+  }
+}
+
+function playAI(){
+  var s = {}
+  if(!ai.last) {
+    var x = getRandom(1, 11)
+    var y = getRandom(1, 11)
+  } else {
+    var xy = around(ai.last[0],ai.last[1], ai.board)
+    var x = xy[0]+1
+    var y = xy[1]+1
+  }
+  s.id = ai.boardName + numberToChar(x) + y
+  fire(s, x, y, ai.board, ai.ships, false)
+}
+
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
 }
