@@ -46,6 +46,13 @@
         }
     }
 
+    function setSize(newSize) {
+      size = newSize > 0 ? newSize : 1
+      ctx.canvas.width = board[0].length * size
+      ctx.canvas.height = board.length * size
+      print(ctx, board, size)
+    }
+
     </script>
   </head>
   <body>
@@ -56,10 +63,17 @@
             ...treść alternatywna...
         </canvas>
       </div>
+      <div class="d-flex justify-content-center">
+        <div class="btn-group" role="group" aria-label="Size">
+          <button type="button" class="btn btn-secondary btn-success" onclick="setSize(++size)">+</button>
+          <button type="button" class="btn btn-secondary btn-danger" onclick="setSize(--size)">-</button>
+        </div>
+      </div>
     </div>
     <script>
     const canvasElem = document.getElementById('canvas');
     const ctx = canvasElem.getContext('2d');
+    var size = 20, iterations = 100
 
     var board = [
       [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
@@ -73,23 +87,15 @@
       [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
     ]
 
-    var size = 20
-
-    ctx.canvas.width = board[0].length * size
-    ctx.canvas.height = board.length * size
-
-    var n = 100
+    setSize(20)
 
     function gameOfLife() {
       board = game(board)
       print(ctx,board,size);
-      if(--n>0) {
-        setTimeout(gameOfLife, 1000)
-      }
+      if(--iterations>0) setTimeout(gameOfLife, 1000)
     }
 
     gameOfLife()
-
     </script>
   </body>
 </html>

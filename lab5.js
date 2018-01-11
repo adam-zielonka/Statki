@@ -104,6 +104,7 @@ function fire(s,x,y,plansza, ships, opponent){
           ai.last = []
           ai.last[0] = x-1
           ai.last[1] = y-1
+          ai.masts.push(ai.last)
         }
         break;
     }
@@ -147,6 +148,7 @@ function shipsStatus(ships, board, opponent){
   if(!opponent){
     if(ai.counter != counter){
       ai.last = undefined
+      ai.masts = []
       ai.counter = counter
     }
   }
@@ -195,6 +197,7 @@ function setAI(boardName, board, ships){
   ai.board = board
   ai.ships = ships
   ai.counter = 0
+  ai.masts = []
 }
 
 function around(i, j, board, counter=0) {
