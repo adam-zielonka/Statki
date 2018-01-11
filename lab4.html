@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Gra w życie</title>
+    <style>
+    #canvas {
+
+        border: 2px solid red;
+    }
+    </style>
+    <script>
+    function game(tablica){
+      var result = tablica.map(item => item.slice())
+      var n = tablica.length;
+      for(var i=0; i<n; i++){
+        var m = tablica[i].length;
+        for(var j=0; j<m; j++){
+          var count = 0;
+          if(i-1>=0 && j-1>=0 && tablica[i-1][j-1]) {count++;};
+          if(i-1>=0 &&           tablica[i-1][j]) {count++};
+          if(i-1>=0 && j+1<m  && tablica[i-1][j+1]) {count++};
+          if(j+1<m  &&           tablica[i][j+1]) {count++};
+          if(j-1>=0 &&           tablica[i][j-1]) {count++};
+          if(i+1<n  && j+1<m  && tablica[i+1][j+1]) {count++};
+          if(i+1<n  && j-1>=0 && tablica[i+1][j-1]) {count++};
+          if(i+1<n  &&           tablica[i+1][j]) {count++};
+          if(tablica[i][j]) {
+            if(count < 2 || count > 3) result[i][j] = false;
+          } else {
+            if(count == 3) result[i][j] = true;
+          }
+        }
+      }
+      return result;
+    }
+
+    var size = 20
+
+    function fillWhite(ctx,x,y) {
+      ctx.fillStyle = "white";
+      ctx.fillRect(x*size,y*size,size,size);
+    }
+
+    function fillBlack(ctx,x,y) {
+      ctx.fillStyle = "black";
+      ctx.fillRect(x*size,y*size,size,size);
+    }
+
+    function print(ctx,lifeBoard){
+      var i = 0;
+      for (var line of lifeBoard) {
+        var j = 0;
+        for (var element of line){
+          if(!element) fillWhite(ctx,j,i)
+          else fillBlack(ctx,j,i)
+          j++
+        }
+        i++
+      }
+    }
+
+    </script>
+  </head>
+  <body>
+    <div>
+      <canvas width="500" height="500" id="canvas">
+          ...treść alternatywna...
+      </canvas>
+    </div>
+    <script>
+    const canvasElem = document.getElementById('canvas');
+    const ctx = canvasElem.getContext('2d');
+
+    var board = [
+      [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
+      [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
+      [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
+      [false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false],
+      [false,false,false,true,true,false,true,true,true,true,false,true,true,false,false,false],
+      [false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false],
+      [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
+      [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
+      [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
+    ]
+
+    ctx.canvas.width = board[0].length * size
+    ctx.canvas.height = board.length * size
+
+    var n = 1000
+
+    function gameOfLife(){
+      board = game(board)
+      print(ctx,board);
+      if((n--)>0) {
+        setTimeout(gameOfLife, 1000)
+      }
+    }
+
+    gameOfLife()
+
+    </script>
+  </body>
+</html>
