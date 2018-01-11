@@ -208,10 +208,6 @@ function around(i, j, board, counter=0) {
       if(i-1>=0 && (board[i-1][j] == 0 || board[i-1][j] == 1)) return [i-1,j]
       if(i+1<10 && (board[i+1][j] == 0 || board[i+1][j] == 1)) return [i+1,j]
       if(j-1>=0 && (board[i][j-1] == 0 || board[i][j-1] == 1)) return [i,j-1]
-      // if(i-1>=0 && (board[i-1][j] == 3)) return [i-1,j]
-      // if(i+1<10 && (board[i+1][j] == 3)) return [i+1,j]
-      // if(j-1>=0 && (board[i][j-1] == 3)) return [i,j-1]
-      // if(j+1<10 && (board[i][j+1] == 3)) return [i,j+1]
       return [getRandom(1, 11), getRandom(1, 11)]
     }
   }
