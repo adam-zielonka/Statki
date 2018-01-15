@@ -89,6 +89,7 @@ function getBoardName(id, y){
 
 function fire(s,x,y,plansza, ships, opponent){
   if(!endGame) {
+    console.log((!opponent ? "Opponent: " : "Me: ")+numberToChar(x)+y)
     var playAgain = true
     switch (plansza[x-1][y-1]) {
       case 0:
@@ -200,18 +201,54 @@ function setAI(boardName, board, ships){
   ai.masts = []
 }
 
+function maxMin(xy) {
+  var maxMin = {}
+  maxMin.max = ai.masts[0][xy]
+  maxMin.min = ai.masts[0][xy]
+  for (var i = 1; i < ai.masts.length; i++) {
+    if (ai.masts[i][xy] > maxMin.max) maxMin.max = ai.masts[i][xy]
+    if (ai.masts[i][xy] < maxMin.min) maxMin.min = ai.masts[i][xy]
+  }
+  return maxMin
+}
+
 function around(i, j, board, counter=0) {
-  var x = getRandom(1, 5)
-  switch (x) {
-    case 1: if(i-1>=0 && (board[i-1][j] == 0 || board[i-1][j] == 1)) return [i-1,j]
-    case 2: if(i+1<10 && (board[i+1][j] == 0 || board[i+1][j] == 1)) return [i+1,j]
-    case 3: if(j-1>=0 && (board[i][j-1] == 0 || board[i][j-1] == 1)) return [i,j-1]
-    case 4: if(j+1<10 && (board[i][j+1] == 0 || board[i][j+1] == 1)) return [i,j+1]
-    default: {
-      if(i-1>=0 && (board[i-1][j] == 0 || board[i-1][j] == 1)) return [i-1,j]
-      if(i+1<10 && (board[i+1][j] == 0 || board[i+1][j] == 1)) return [i+1,j]
-      if(j-1>=0 && (board[i][j-1] == 0 || board[i][j-1] == 1)) return [i,j-1]
-      return [getRandom(1, 11), getRandom(1, 11)]
+  if(ai.masts.length < 2) {
+    var x = getRandom(1, 5)
+    switch (x) {
+      case 1: if(i-1>=0 && (board[i-1][j] == 0 || board[i-1][j] == 1)) return [i-1,j]
+      case 2: if(i+1<10 && (board[i+1][j] == 0 || board[i+1][j] == 1)) return [i+1,j]
+      case 3: if(j-1>=0 && (board[i][j-1] == 0 || board[i][j-1] == 1)) return [i,j-1]
+      case 4: if(j+1<10 && (board[i][j+1] == 0 || board[i][j+1] == 1)) return [i,j+1]
+      default: {
+        if(i-1>=0 && (board[i-1][j] == 0 || board[i-1][j] == 1)) return [i-1,j]
+        if(i+1<10 && (board[i+1][j] == 0 || board[i+1][j] == 1)) return [i+1,j]
+        if(j-1>=0 && (board[i][j-1] == 0 || board[i][j-1] == 1)) return [i,j-1]
+        return [getRandom(0, 10), getRandom(0, 10)]
+      }
+    }
+  } else {
+    console.log(ai.masts)
+    if (ai.masts[0][0] == ai.masts[1][0]) {
+      console.log("x");
+      var x = ai.masts[0][0]
+      var y = maxMin(1)
+      console.log(y);
+      if(y.min-1>=0 && (board[x][y.min-1] == 0 || board[x][y.min-1] == 1)) return [x,y.min-1]
+      if(y.max+1<10 && (board[x][y.max+1] == 0 || board[x][y.max+1] == 1)) return [x,y.max+1]
+      ai.last = undefined
+      ai.masts = []
+      return [getRandom(0, 10), getRandom(0, 10)]
+    } else {
+      console.log("y");
+      var x = maxMin(0)
+      var y = ai.masts[0][1]
+      console.log(x);
+      if(x.min-1>=0 && (board[x.min-1][y] == 0 || board[x.min-1][y] == 1)) return [x.min-1,y]
+      if(x.max+1<10 && (board[x.max+1][y] == 0 || board[x.max+1][y] == 1)) return [x.max+1,y]
+      ai.last = undefined
+      ai.masts = []
+      return [getRandom(0, 10), getRandom(0, 10)]
     }
   }
 }
