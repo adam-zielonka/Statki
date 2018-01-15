@@ -1,6 +1,6 @@
 //Statki
 function createHTMLBoard(id, plansza, ships, opponent=false){
-  var html = "<table>"
+  var html = `<table class="table-responsive table-sm">`
   for(var i=0;i<=10;i++){
     html+= "<tr>"
     for(var j=0;j<=10;j++){
@@ -14,7 +14,7 @@ function createHTMLBoard(id, plansza, ships, opponent=false){
       } else {
         var buttonID = id+numberToChar(i)+j
         var enabled = opponent ? "" : "disabled"
-        button = `<button type="button" onclick="fire(this,${i},${j},${plansza},${ships},${opponent})" ${enabled}
+        button = `<button type="button" class="btn btn-info" style="opacity: 1" onclick="fire(this,${i},${j},${plansza},${ships},${opponent})" ${enabled}
          id="${buttonID}" >&nbsp;</button>`
       }
       html+= "<td>" +  button + "</td>"
@@ -29,7 +29,14 @@ function colorBoard(name, board, opponent) {
   for(var i=0;i<10;i++){
     for(var j=0;j<10;j++){
       var color = opponent ? getOpponentColor(board[i][j]) : getColor(board[i][j])
-      document.getElementById(name+numberToChar(i+1)+(j+1)).style.backgroundColor = color
+      var element = document.getElementById(name+numberToChar(i+1)+(j+1))
+      if((board[i][j] == 2 || board[i][j] == 3) && opponent)
+        element.disabled = true
+      element.classList.remove("btn-info");
+      element.classList.remove("btn-danger");
+      element.classList.remove("btn-dark");
+      element.classList.remove("btn-light");
+      element.className += " " + color;
     }
   }
 }
@@ -68,18 +75,18 @@ function charToNumber(char) {
 
 function getColor(id) {
   switch (id) {
-    case 1: return "red"
-    case 2: return "white"
-    case 3: return "black"
-    default: return "blue"
+    case 1: return "btn-dark"
+    case 2: return "btn-light"
+    case 3: return "btn-danger"
+    default: return "btn-info"
   }
 }
 
 function getOpponentColor(id) {
   switch (id) {
-    case 2: return "white"
-    case 3: return "black"
-    default: return "blue"
+    case 2: return "btn-light"
+    case 3: return "btn-success"
+    default: return "btn-info"
   }
 }
 

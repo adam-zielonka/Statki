@@ -2,21 +2,29 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
     <title>Statki</title>
     <style>
       td {
         text-align: center;
       }
       button {
-        background-color: blue;
+        width: 40px;
+        height: 40px;
       }
     </style>
     <script src="lab5.js"></script>
   </head>
   <body>
-    <div></div>
-    <div id="myBoard" style="float: left"></div>
-    <div id="aiBoard" style="float: left"></div>
+    <div class="container d-flex justify-content-center">
+      <div></div>
+      <div id="myBoard" class="d-flex justify-content-center"></div>
+      <div id="aiBoard" class="d-flex justify-content-center"></div>
+    </div>
     <script>
       var statki = [
         ['B2','C2','D2','E2'],
@@ -47,12 +55,12 @@
       //   ['D2','D3','D4','D5','D6','D7','D8'],
       //   ['H2','H3','H4','H5','H6','H7','H8']
       // ]
-      var plansza = generateBoard(statki)
-      var planszaAI = generateBoard(statki)
-      createHTMLBoard("myBoard","plansza", "statki")
-      colorBoard("myBoard",plansza)
-      createHTMLBoard("aiBoard","planszaAI", "statki", true)
-      setAI("myBoard", plansza, statki)
+      var plansza_G = generateBoard(statki)
+      var planszaAI_G = generateBoard(statki)
+      createHTMLBoard("myBoard","plansza_G", "statki")
+      colorBoard("myBoard",plansza_G)
+      createHTMLBoard("aiBoard","planszaAI_G", "statki", true)
+      setAI("myBoard", plansza_G, statki)
     </script>
   </body>
 </html>
