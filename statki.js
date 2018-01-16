@@ -1,6 +1,6 @@
 //Statki
 function createHTMLBoard(id, plansza, ships, opponent=false){
-  var html = `<table class="table-responsive table-sm">`
+  var html = `<table class="table-responsive table-sm">`;
   for(var i=0;i<=10;i++){
     html+= "<tr>"
     for(var j=0;j<=10;j++){
@@ -309,10 +309,8 @@ function setShip(masts, board) {
     if(vh == 0) {
       if(x+masts > 10) continue
       var ok = true
-      for (var i = -1; i < masts+1; i++) {
-        for (var j = -1; j <= 1; j++) {
-          if(x+i>=0 && y+j>=0 && x+i<10 && y+j<10 && board[x+i][y+j]) ok = false
-        }
+      for (var i = 0; i < masts; i++) {
+        if(x+i<10 && board[x+i][y]) ok = false
       }
       if(!ok) continue
       for (var i = -1; i < masts+1; i++) {
@@ -328,10 +326,8 @@ function setShip(masts, board) {
     } else {
       if(y+masts > 10) continue
       var ok = true
-      for (var j = -1; j < masts+1; j++) {
-        for (var i = -1; i <= 1; i++) {
-          if(x+i>=0 && y+j>=0 && x+i<10 && y+j<10 && board[x+i][y+j]) ok = false
-        }
+      for (var i = 0; i < masts; i++) {
+        if(y+i<10 && board[x][y+i]) ok = false
       }
       if(!ok) continue
       for (var j = -1; j < masts+1; j++) {
@@ -403,6 +399,7 @@ function firstRun(){
 }
 
 function startGame(){
+  endGame = false
   statki = generateShips()
   statki2 = generateShips()
   plansza = generateBoard(statki)
