@@ -14,7 +14,7 @@ function createHTMLBoard(id, plansza, ships, opponent=false){
       } else {
         var buttonID = id+numberToChar(i)+j
         var enabled = opponent ? "" : "disabled"
-        button = `<button type="button" class="btn btn-info" style="opacity: 1" onclick="fire(this,${i},${j},${plansza},${ships},${opponent})" ${enabled}
+        button = `<button type="button" class="btn btn-info watter" style="opacity: 1" onclick="fire(this,${i},${j},${plansza},${ships},${opponent})" ${enabled}
          id="${buttonID}" >&nbsp;</button>`
       }
       html+= "<td>" +  button + "</td>"
@@ -376,4 +376,40 @@ function generateShips(){
   }
   console.log(ships)
   return ships
+}
+
+var statki
+var statki2
+var plansza
+var planszaAI
+
+function firstRun(){
+  statki = [
+    ['B2','B3','B4','C2','D2','E2','E3','E4','F4','G4','H4','H3','H2'],
+    ['B6','C6','D6','E6','F6','G6','H6','E7','B8','C8','D8','E8','F8','G8','H8'],
+    ['B10','C10','D10','E10','F10','G10','H10']
+  ]
+  statki2 = [
+    ['B1','C1','D1','E1','F1','G1','H1'],
+    ['B3','C3','D3','E3','F3','G3','H3','B4','B5','C5','D5','D4'],
+    ['B7','B8','B9','C7','D7','E7','E8','E9','F9','G9','H9','H8','H7']
+  ]
+  plansza = generateBoard(statki)
+  planszaAI = generateBoard(statki2)
+  createHTMLBoard("myBoard","plansza", "statki")
+  colorBoard("myBoard",plansza)
+  createHTMLBoard("aiBoard","planszaAI", "statki2")
+  colorBoard("aiBoard",planszaAI)
+}
+
+function startGame(){
+  statki = generateShips()
+  statki2 = generateShips()
+  plansza = generateBoard(statki)
+  planszaAI = generateBoard(statki2)
+  createHTMLBoard("myBoard","plansza", "statki")
+  colorBoard("myBoard",plansza)
+  createHTMLBoard("aiBoard","planszaAI", "statki2", true)
+  setAI("myBoard", plansza, statki)
+  setMY("aiBoard", planszaAI, statki2)
 }
