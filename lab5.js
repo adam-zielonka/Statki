@@ -102,9 +102,6 @@ function fire(s,x,y,plansza, ships, opponent){
       case 0:
         plansza[x-1][y-1] = 2
         playAgain = false
-        // if(!opponent) {
-        //   ai.last = undefined
-        // }
         break;
       case 1:
         plansza[x-1][y-1] = 3
@@ -276,4 +273,86 @@ function playAI(){
 
 function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function setShip(masts, board) {
+  //console.log("START GEN: "+masts)
+  var result = []
+  var tries = 0
+  while(tries<100) {
+    ++tries
+    result = []
+    var x = getRandom(0, 10)
+    var y = getRandom(0, 10)
+    var vh = getRandom(0, 2)
+    if(vh == 0) {
+      if(x+masts > 10) continue
+      var ok = true
+      for (var i = -1; i < masts+1; i++) {
+        for (var j = -1; j <= 1; j++) {
+          if(x+i>=0 && y+j>=0 && x+i<10 && y+j<10 && board[x+i][y+j]) ok = false
+        }
+      }
+      if(!ok) continue
+      for (var i = -1; i < masts+1; i++) {
+        for (var j = -1; j <= 1; j++) {
+          if(x+i>=0 && y+j>=0 && x+i<10 && y+j<10) board[x+i][y+j] = true
+        }
+      }
+      for (var i = 0; i < masts; i++) {
+        result.push(`${numberToChar(x+i+1)}${y+1}`)
+      }
+      tries = 0
+      break
+    } else {
+      if(y+masts > 10) continue
+      var ok = true
+      for (var j = -1; j < masts+1; j++) {
+        for (var i = -1; i <= 1; i++) {
+          if(x+i>=0 && y+j>=0 && x+i<10 && y+j<10 && board[x+i][y+j]) ok = false
+        }
+      }
+      if(!ok) continue
+      for (var j = -1; j < masts+1; j++) {
+        for (var i = -1; i <= 1; i++) {
+          if(x+i>=0 && y+j>=0 && x+i<10 && y+j<10) board[x+i][y+j] = true
+        }
+      }
+      for (var i = 0; i < masts; i++) {
+        result.push(`${numberToChar(x+1)}${y+i+1}`)
+      }
+      tries = 0
+      break
+    }
+  }
+  return result
+}
+
+function generateShips(){
+  var ships = []
+  var tries = 0
+  while (true) {
+    console.log("GEN #"+(++tries))
+    var board = []
+    for (var i = 0; i < 10; i++) {
+      board[i] = []
+      for (var j = 0; j < 10; j++) {
+        board[i][j] = false
+      }
+    }
+    ships = []
+    ships.push(setShip(4, board)); if(ships[ships.length-1].length < 1) continue
+    ships.push(setShip(3, board)); if(ships[ships.length-1].length < 1) continue
+    ships.push(setShip(3, board)); if(ships[ships.length-1].length < 1) continue
+    ships.push(setShip(2, board)); if(ships[ships.length-1].length < 1) continue
+    ships.push(setShip(2, board)); if(ships[ships.length-1].length < 1) continue
+    ships.push(setShip(2, board)); if(ships[ships.length-1].length < 1) continue
+    ships.push(setShip(1, board)); if(ships[ships.length-1].length < 1) continue
+    ships.push(setShip(1, board)); if(ships[ships.length-1].length < 1) continue
+    ships.push(setShip(1, board)); if(ships[ships.length-1].length < 1) continue
+    ships.push(setShip(1, board)); if(ships[ships.length-1].length < 1) continue
+    break
+  }
+  console.log(ships)
+  return ships
 }

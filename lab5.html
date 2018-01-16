@@ -26,19 +26,19 @@
       <div id="aiBoard" class="d-flex justify-content-center"></div>
     </div>
     <script>
-      var statki = [
-        ['B2','C2','D2','E2'],
-        ['G2','H2'],
-        ['A5'],
-        ['C4','C5','C6'],
-        ['F4'],
-        ['E6','F6','G6'],
-        ['I5','I6','I7'],
-        ['G8'],
-        ['B9','C9'],
-        ['F10','G10'],
-        ['J10']
-      ]
+      // var statki = [
+      //   ['B2','C2','D2','E2'],
+      //   ['G2','H2'],
+      //   ['A5'],
+      //   ['C4','C5','C6'],
+      //   ['F4'],
+      //   ['E6','F6','G6'],
+      //   ['I5','I6','I7'],
+      //   ['G8'],
+      //   ['B9','C9'],
+      //   ['F10','G10'],
+      //   ['J10']
+      // ]
       // var statki = [
       //   ['B2','C2','D2','E2'],
       //   ['B4','C4','D4','E4'],
@@ -55,11 +55,13 @@
       //   ['D2','D3','D4','D5','D6','D7','D8'],
       //   ['H2','H3','H4','H5','H6','H7','H8']
       // ]
+      var statki = generateShips()
+      var statki2 = generateShips()
       var plansza_G = generateBoard(statki)
-      var planszaAI_G = generateBoard(statki)
+      var planszaAI_G = generateBoard(statki2)
       createHTMLBoard("myBoard","plansza_G", "statki")
       colorBoard("myBoard",plansza_G)
-      createHTMLBoard("aiBoard","planszaAI_G", "statki", true)
+      createHTMLBoard("aiBoard","planszaAI_G", "statki2", true)
       setAI("myBoard", plansza_G, statki)
     </script>
   </body>
