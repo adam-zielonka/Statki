@@ -25,10 +25,10 @@ function createHTMLBoard(id, plansza, ships, opponent=false){
   document.getElementById(id).innerHTML = html
 }
 
-function colorBoard(name, board, opponent) {
+function colorBoard(name, board, opponent, end=false) {
   for(var i=0;i<10;i++){
     for(var j=0;j<10;j++){
-      var color = opponent ? getOpponentColor(board[i][j]) : getColor(board[i][j])
+      var color = !end ? opponent ? getOpponentColor(board[i][j]) : getColor(board[i][j]) : getEndColor(board[i][j])
       var element = document.getElementById(name+numberToChar(i+1)+(j+1))
       if((board[i][j] == 2 || board[i][j] == 3) && opponent)
         element.disabled = true
@@ -90,6 +90,15 @@ function getOpponentColor(id) {
   }
 }
 
+function getEndColor(id) {
+  switch (id) {
+    case 1: return "btn-dark"
+    case 2: return "btn-light"
+    case 3: return "btn-success"
+    default: return "btn-info"
+  }
+}
+
 function getBoardName(id, y){
    return id.substring(0, id.length - (y == 10 ? 3 : 2))
 }
@@ -114,8 +123,13 @@ function fire(s,x,y,plansza, ships, opponent){
         break;
     }
     endGame = shipsStatus(ships,plansza,opponent)
-    colorBoard(getBoardName(s.id,y),plansza,opponent);
-    if((!playAgain && opponent) || (playAgain && !opponent)) playAI()
+    if(endGame) {
+      colorBoard(my.boardName, my.board, false, true)
+      colorBoard(ai.boardName, ai.board, false)
+    } else {
+      colorBoard(getBoardName(s.id,y),plansza,opponent)
+      if((!playAgain && opponent) || (playAgain && !opponent)) playAI()
+    }
   }
 }
 
@@ -195,6 +209,13 @@ function generateBoard(ships) {
 }
 
 function pushLast(){}
+
+var my = {}
+function setMY(boardName, board, ships){
+  my.boardName = boardName
+  my.board = board
+  my.ships = ships
+}
 
 var ai = {}
 function setAI(boardName, board, ships){
