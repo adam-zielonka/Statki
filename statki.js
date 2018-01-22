@@ -30,15 +30,34 @@ function colorBoard(name, board, opponent, end=false) {
     for(var j=0;j<10;j++){
       var color = !end ? opponent ? getOpponentColor(board[i][j]) : getColor(board[i][j]) : getEndColor(board[i][j])
       var element = document.getElementById(name+numberToChar(i+1)+(j+1))
-      if((board[i][j] == 2 || board[i][j] == 3) && opponent)
+      if(((board[i][j] == 2 || board[i][j] == 3) && opponent) || end)
         element.disabled = true
-      element.classList.remove("btn-info");
-      element.classList.remove("btn-danger");
-      element.classList.remove("btn-dark");
-      element.classList.remove("btn-light");
-      element.className += " " + color;
+      element.classList.remove("btn-info")
+      element.classList.remove("btn-danger")
+      element.classList.remove("btn-dark")
+      element.classList.remove("btn-light")
+      element.className += " " + color
     }
   }
+}
+
+function showWinner(winner, losser) {
+  document.getElementById(winner).classList.remove("btn-info")
+  document.getElementById(losser).classList.remove("btn-info")
+
+  document.getElementById(winner).className += " btn-success"
+  document.getElementById(losser).className += " btn-danger"
+}
+
+function resetWinner() {
+  document.getElementById("player").classList.remove("btn-success")
+  document.getElementById("player").classList.remove("btn-danger")
+
+  document.getElementById("computer").classList.remove("btn-success")
+  document.getElementById("computer").classList.remove("btn-danger")
+
+  document.getElementById("player").className += " btn-info"
+  document.getElementById("computer").className += " btn-info"
 }
 
 function numberToChar(number) {
@@ -126,6 +145,8 @@ function fire(s,x,y,plansza, ships, opponent){
     if(endGame) {
       colorBoard(my.boardName, my.board, false, true)
       colorBoard(ai.boardName, ai.board, false)
+      if(!opponent) showWinner("computer","player")
+      else showWinner("player","computer")
     } else {
       colorBoard(getBoardName(s.id,y),plansza,opponent)
       if((!playAgain && opponent) || (playAgain && !opponent)) playAI()
@@ -399,6 +420,7 @@ function firstRun(){
 }
 
 function startGame(){
+  resetWinner()
   endGame = false
   statki = generateShips()
   statki2 = generateShips()
