@@ -1,16 +1,19 @@
 //Statki
-function createHTMLBoard(id, plansza, ships, opponent=false){
+function createHTMLBoard(id, plansza, ships, opponent=false, firstRun=false){
   var html = `<table class="table-responsive table-sm">`;
   for(var i=0;i<=10;i++){
     html+= "<tr>"
-    for(var j=0;j<=10;j++){
+    for(var j=0;j<=((opponent||firstRun) ? 11 : 10);j++){
       var button = ""
-      if(j == 0 && i == 0){
-        button = "&nbsp;"
+      if((j == 0 || j == 11) && i == 0){
+        button = `<button type="button" class="btn btn-light watter" style="opacity: 1" disabled
+         >&nbsp;</button>`
       } else if (i == 0) {
-        button = j
-      } else if (j == 0) {
-        button = numberToChar(i)
+        button = `<button type="button" class="btn btn-light watter" style="opacity: 1" disabled
+         ><b>${j}</b></button>`
+      } else if (j == 0 || j == 11) {
+        button = `<button type="button" class="btn btn-light watter" style="opacity: 1" disabled
+         ><b>${numberToChar(i)}</b></button>`
       } else {
         var buttonID = id+numberToChar(i)+j
         var enabled = opponent ? "" : "disabled"
@@ -415,7 +418,7 @@ function firstRun(){
   planszaAI = generateBoard(statki2)
   createHTMLBoard("myBoard","plansza", "statki")
   colorBoard("myBoard",plansza)
-  createHTMLBoard("aiBoard","planszaAI", "statki2")
+  createHTMLBoard("aiBoard","planszaAI", "statki2", false, true)
   colorBoard("aiBoard",planszaAI)
 }
 
