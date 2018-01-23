@@ -127,7 +127,6 @@ function getBoardName(id, y){
 
 function fire(s,x,y,plansza, ships, opponent){
   if(!endGame) {
-    console.log((!opponent ? "Opponent: " : "Me: ")+numberToChar(x)+y)
     var playAgain = true
     switch (plansza[x-1][y-1]) {
       case 0:
@@ -277,22 +276,17 @@ function around(i, j, board, counter=0) {
       }
     }
   } else {
-    console.log(ai.masts)
     if (ai.masts[0][0] == ai.masts[1][0]) {
-      console.log("x");
       var x = ai.masts[0][0]
       var y = maxMin(1)
-      console.log(y);
       if(y.min-1>=0 && (board[x][y.min-1] == 0 || board[x][y.min-1] == 1)) return [x,y.min-1]
       if(y.max+1<10 && (board[x][y.max+1] == 0 || board[x][y.max+1] == 1)) return [x,y.max+1]
       ai.last = undefined
       ai.masts = []
       return [getRandom(0, 10), getRandom(0, 10)]
     } else {
-      console.log("y");
       var x = maxMin(0)
       var y = ai.masts[0][1]
-      console.log(x);
       if(x.min-1>=0 && (board[x.min-1][y] == 0 || board[x.min-1][y] == 1)) return [x.min-1,y]
       if(x.max+1<10 && (board[x.max+1][y] == 0 || board[x.max+1][y] == 1)) return [x.max+1,y]
       ai.last = undefined
@@ -321,7 +315,6 @@ function getRandom(min, max) {
 }
 
 function setShip(masts, board) {
-  //console.log("START GEN: "+masts)
   var result = []
   var tries = 0
   while(tries<100) {
@@ -373,7 +366,6 @@ function generateShips(){
   var ships = []
   var tries = 0
   while (true) {
-    console.log("GEN #"+(++tries))
     var board = []
     for (var i = 0; i < 10; i++) {
       board[i] = []
@@ -394,7 +386,8 @@ function generateShips(){
     ships.push(setShip(1, board)); if(ships[ships.length-1].length < 1) continue
     break
   }
-  console.log(ships)
+  // console.log("GEN #"+(++tries))
+  // console.log(ships)
   return ships
 }
 
@@ -426,7 +419,11 @@ function startGame(){
   resetWinner()
   endGame = false
   statki = generateShips()
+  console.log("Player ships:")
+  console.log(statki)
   statki2 = generateShips()
+  console.log("Computer ships:")
+  console.log(statki2)
   plansza = generateBoard(statki)
   planszaAI = generateBoard(statki2)
   createHTMLBoard("myBoard","plansza", "statki")
