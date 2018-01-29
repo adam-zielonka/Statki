@@ -1,14 +1,14 @@
 //Statki
 function createHTMLBoard(id, plansza, ships, opponent=false, firstRun=false){
   var html = `<table class="table-responsive table-sm">`;
-  for(var i=0;i<=10;i++){
+  for(var i=0;i<=11;i++){
     html+= "<tr>"
     for(var j=0;j<=((opponent||firstRun) ? 11 : 10);j++){
       var button = ""
-      if((j == 0 || j == 11) && i == 0){
+      if((j == 0 || j == 11) && (i == 0 || i == 11)){
         button = `<button type="button" class="btn btn-light watter" style="opacity: 1" disabled
          >&nbsp;</button>`
-      } else if (i == 0) {
+      } else if (i == 0 || i == 11) {
         button = `<button type="button" class="btn btn-light watter" style="opacity: 1" disabled
          ><b>${j}</b></button>`
       } else if (j == 0 || j == 11) {
@@ -398,14 +398,14 @@ var planszaAI
 
 function firstRun(){
   statki = [
-    ['B2','B3','B4','C2','D2','E2','E3','E4','F4','G4','H4','H3','H2'],
-    ['B6','C6','D6','E6','F6','G6','H6','E7','B8','C8','D8','E8','F8','G8','H8'],
-    ['B10','C10','D10','E10','F10','G10','H10']
+    ['B2','B3','B4','C2','D2','E2','E3','E4','F4','G4','H4','I4','I3','I2'],
+    ['B6','C6','D6','E6','F6','G6','H6','I6','E7','B8','C8','D8','E8','F8','G8','H8','I8'],
+    ['B10','C10','D10','E10','F10','G10','H10','I10']
   ]
   statki2 = [
-    ['B1','C1','D1','E1','F1','G1','H1'],
-    ['B3','C3','D3','E3','F3','G3','H3','B4','B5','C5','D5','D4'],
-    ['B7','B8','B9','C7','D7','E7','E8','E9','F9','G9','H9','H8','H7']
+    ['B1','C1','D1','E1','F1','G1','H1','I1'],
+    ['B3','C3','D3','E3','F3','G3','H3','I3','B4','B5','C5','D5','E5','E4'],
+    ['B7','B8','B9','C7','D7','E7','E8','E9','F9','G9','H9','I9','I8','I7']
   ]
   plansza = generateBoard(statki)
   planszaAI = generateBoard(statki2)
