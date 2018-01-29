@@ -53,6 +53,25 @@
       print(ctx, board, size)
     }
 
+    function getRandom(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    function generateBoard(boardSize) {
+      var board = []
+      for (var i = 0; i < boardSize; i++) {
+        board[i] = []
+        for (var j = 0; j < boardSize; j++)
+          board[i][j] = getRandom(0, 2) == 1
+      }
+      return board
+    }
+
+    function gameOfLife() {
+      board = game(board)
+      print(ctx,board,size);
+      setTimeout(gameOfLife, time)
+    }
     </script>
   </head>
   <body>
@@ -71,31 +90,12 @@
       </div>
     </div>
     <script>
-    const canvasElem = document.getElementById('canvas');
-    const ctx = canvasElem.getContext('2d');
-    var size = 20, iterations = 100
-
-    var board = [
-      [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
-      [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
-      [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
-      [false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false],
-      [false,false,false,true,true,false,true,true,true,true,false,true,true,false,false,false],
-      [false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false],
-      [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
-      [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
-      [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],
-    ]
-
-    setSize(20)
-
-    function gameOfLife() {
-      board = game(board)
-      print(ctx,board,size);
-      if(--iterations>0) setTimeout(gameOfLife, 1000)
-    }
-
-    gameOfLife()
+      const canvasElem = document.getElementById('canvas');
+      const ctx = canvasElem.getContext('2d');
+      var size = 10, time = 100, boardSize = 50
+      var board = generateBoard(boardSize)
+      setSize(size)
+      gameOfLife()
     </script>
   </body>
 </html>
