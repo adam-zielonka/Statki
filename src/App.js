@@ -11,9 +11,8 @@ const Board = observer(({ player }) => {
   board.push(<div key={-1} className='row'>{firstRow}</div>)
 
   for (let i = 0; i < 10; i++) {
-    const row = [<Box key={i} value={numberToChar(i+1)} />]
-    for (let j = 0; j < 10; j++) row.push(<Box key={''+i+j} box={getBox(i,j)} />)
-    board.push(<div key={i} className='row'>{row}</div>)
+    const row = [0,1,2,3,4,5,6,7,8,9].map(j => <Box key={''+i+j} box={getBox(i,j)} />)
+    board.push(<div key={i} className='row'>{[<Box key={i} value={numberToChar(i+1)} />, ...row]}</div>)
   }
   
   return <div className='board'>
@@ -23,22 +22,28 @@ const Board = observer(({ player }) => {
 
 const Box = observer(({value, box={ship: false, shot: true}}) => {
   function onClickHandler(){
-    if(box) box.shot = true
+    if(box) box.shoot()
   }
+  
+  const classes = {
+    black: !box.shot && box.ship, 
+  }
+  classes[box.color] = box.shot && box.ship
 
   return <input 
     type='button'
     disabled={box.shot}
-    className={cx('box', {green: box.shot && box.ship})}
+    className={cx('box', classes)}
     onClick={onClickHandler}
     value={value ? value : ''}
   />
 })
 
 function App() {
-  const { playerGreen } = useStore()
+  const { playerGreen, playerRed } = useStore()
 
-  return <div className="App">
+  return <div className="app">
+    <Board player={playerRed} />
     <Board player={playerGreen} />
   </div>
 }
