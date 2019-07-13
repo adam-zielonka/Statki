@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "classnames": "^2.2.6",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
@@ -13,8 +14,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build-css": "stylus -c src/static/stylus/ --out src/static/css",
-    "watch-css": "yarn run build-css && stylus -c -w src/static/stylus --out src/static/css"
+    "build-css": "stylus src/ --out src/",
+    "watch-css": "yarn run build-css && stylus -w src/ --out src/"
   },
   "eslintConfig": {
     "extends": "react-app"
