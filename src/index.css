@@ -9,6 +9,7 @@ body {
   border-radius: 0.25rem;
   margin: 0.3rem;
   font-weight: bold;
+  font-size: 11pt;
   color: #000;
   background-color: #17a2b8;
 }
@@ -23,6 +24,9 @@ body {
 }
 .box.green {
   background-color: #28a745;
+}
+.box.black {
+  background-color: #000;
 }
 .board {
   display: flex;

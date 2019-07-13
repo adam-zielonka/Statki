@@ -1,40 +1,46 @@
-import React, {useState} from 'react'
+import React from 'react'
 import cx from 'classnames'
 import { numberToChar } from './utils'
+import { useStore } from './store'
+import { observer } from 'mobx-react-lite'
 
-function Board() {
+const Board = observer(({ player }) => {
+  const { getBox } = player
   const board = []
-  const firstRow = []
-  for (let j = 0; j < 11; j++) firstRow.push(<Box key={'-1'+j} value={j} />)
+  const firstRow = [0,1,2,3,4,5,6,7,8,9,10].map(i => <Box key={'-0'+i} value={i} />)
   board.push(<div key={-1} className='row'>{firstRow}</div>)
 
   for (let i = 0; i < 10; i++) {
     const row = [<Box key={i} value={numberToChar(i+1)} />]
-    for (let j = 0; j < 10; j++) row.push(<Box key={''+i+j} x={i} j={j} />)
+    for (let j = 0; j < 10; j++) row.push(<Box key={''+i+j} box={getBox(i,j)} />)
     board.push(<div key={i} className='row'>{row}</div>)
   }
   
   return <div className='board'>
     {board}
   </div>
-}
+})
 
-function Box({value}) {
-  const [state, setState] = useState(0)
+const Box = observer(({value, box={ship: false, shot: true}}) => {
+  function onClickHandler(){
+    if(box) box.shot = true
+  }
 
   return <input 
     type='button'
-    disabled={value !== undefined || state%4 === 3}
-    className={cx('box', {red: state%4 === 1, green: state%4 === 2 })}
-    onClick={() => setState(state+1)}
+    disabled={box.shot}
+    className={cx('box', {green: box.shot && box.ship})}
+    onClick={onClickHandler}
     value={value ? value : ''}
   />
-}
+})
 
 function App() {
+  const { playerGreen } = useStore()
+
   return <div className="App">
-    <Board/>
+    <Board player={playerGreen} />
   </div>
 }
 
-export default App
+export default observer(App)
