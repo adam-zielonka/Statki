@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 import { decorate, observable, action } from 'mobx'
-import { generateShips, getXY, getRandom, sleep } from './utils'
+import { generateShips, getXY, getRandom, sleep, shuffle } from './utils'
 
 export class Board {
   constructor({color, opponent, ships}) {
@@ -60,14 +60,22 @@ export class Board {
   }
 
   setMishits(i, j){
-    if(i-1>=0 && j-1>=0) this.boxes[i-1][j-1].shot = true
-    if(i-1>=0) this.boxes[i-1][j].shot = true
-    if(i-1>=0 && j+1<10) this.boxes[i-1][j+1].shot = true
-    if(j+1<10) this.boxes[i][j+1].shot = true
-    if(j-1>=0) this.boxes[i][j-1].shot = true
-    if(i+1<10 && j+1<10) this.boxes[i+1][j+1].shot = true
-    if(i+1<10 && j-1>=0) this.boxes[i+1][j-1].shot = true
-    if(i+1<10) this.boxes[i+1][j].shot = true
+    if(i-1>=0 && j-1>=0) 
+      this.boxes[i-1][j-1].shot = true
+    if(i-1>=0) 
+      this.boxes[i-1][j].shot = true
+    if(i-1>=0 && j+1<10) 
+      this.boxes[i-1][j+1].shot = true
+    if(j+1<10) 
+      this.boxes[i][j+1].shot = true
+    if(j-1>=0) 
+      this.boxes[i][j-1].shot = true
+    if(i+1<10 && j+1<10) 
+      this.boxes[i+1][j+1].shot = true
+    if(i+1<10 && j-1>=0) 
+      this.boxes[i+1][j-1].shot = true
+    if(i+1<10) 
+      this.boxes[i+1][j].shot = true
   }
 
   getBox(x, y) {
@@ -113,10 +121,10 @@ export class AI {
   }
 
   maxMin(xy) {
-    var maxMin = {}
+    let maxMin = {}
     maxMin.max = this.masts[0][xy]
     maxMin.min = this.masts[0][xy]
-    for (var i = 1; i < this.masts.length; i++) {
+    for (let i = 1; i < this.masts.length; i++) {
       if (this.masts[i][xy] > maxMin.max) maxMin.max = this.masts[i][xy]
       if (this.masts[i][xy] < maxMin.min) maxMin.min = this.masts[i][xy]
     }
@@ -125,41 +133,29 @@ export class AI {
 
   around(i, j) {
     if(this.masts.length < 2) {
-      const x = getRandom(1, 5)
-      switch (x) {
-      case 1: if(i-1>=0 && !this.board.boxes[i-1][j].shot) return [i-1,j] 
-      // eslint-disable-next-line no-fallthrough
-      case 2: if(i+1<10 && !this.board.boxes[i+1][j].shot) return [i+1,j] 
-      // eslint-disable-next-line no-fallthrough
-      case 3: if(j-1>=0 && !this.board.boxes[i][j-1].shot) return [i,j-1] 
-      // eslint-disable-next-line no-fallthrough
-      case 4: if(j+1<10 && !this.board.boxes[i][j+1].shot) return [i,j+1] 
-      // eslint-disable-next-line no-fallthrough
-      default: {
-        if(i-1>=0 && !this.board.boxes[i-1][j].shot) return [i-1,j]
-        if(i+1<10 && !this.board.boxes[i+1][j].shot) return [i+1,j]
-        if(j-1>=0 && !this.board.boxes[i][j-1].shot) return [i,j-1]
-        return this.selectRandom()
-      }
-      }
+      const boxes = []
+      if(i-1>=0 && !this.board.boxes[i-1][j].shot) boxes.push([i-1,j])
+      if(i+1<10 && !this.board.boxes[i+1][j].shot) boxes.push([i+1,j])
+      if(j-1>=0 && !this.board.boxes[i][j-1].shot) boxes.push([i,j-1])
+      if(j+1<10 && !this.board.boxes[i][j+1].shot) boxes.push([i,j+1])
+
+      shuffle(boxes)
+
+      if(boxes.length) return boxes[0]
+      else return this.selectRandom()
+
     } else {
       if (this.masts[0][0] === this.masts[1][0]) {
-        let x = this.masts[0][0]
-        let y = this.maxMin(1)
+        let [x, y] = [this.masts[0][0], this.maxMin(1)]
         if(y.min-1>=0 && !this.board.boxes[x][y.min-1].shot) return [x,y.min-1]
         if(y.max+1<10 && !this.board.boxes[x][y.max+1].shot) return [x,y.max+1]
-        this.last = undefined
-        this.masts = []
-        return this.selectRandom()
       } else {
-        let x = this.maxMin(0)
-        let y = this.masts[0][1]
+        let [x, y] = [this.maxMin(0), this.masts[0][1]]
         if(x.min-1>=0 && !this.board.boxes[x.min-1][y].shot) return [x.min-1,y]
         if(x.max+1<10 && !this.board.boxes[x.max+1][y].shot) return [x.max+1,y]
-        this.last = undefined
-        this.masts = []
-        return this.selectRandom()
       }
+      this.reset()
+      return this.selectRandom()
     }
   }
 
@@ -171,11 +167,7 @@ export class AI {
 
   async play() {
     await sleep(500)
-    let x, y
-    if(!this.last)
-      [x, y] = this.selectRandom()
-    else
-      [x, y] = this.around(this.last[0], this.last[1])
+    const [x, y] = this.last ? this.around(this.last[0], this.last[1]) : this.selectRandom()
     const result = this.fire(this.board.getBox(x,y))
 
     if(result) {

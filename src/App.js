@@ -7,12 +7,16 @@ import { observer } from 'mobx-react-lite'
 const Board = observer(({ player }) => {
   const { getBox, opponent } = player
   const board = []
-  const firstRow = [0,1,2,3,4,5,6,7,8,9,10].map(i => <Box key={'-0'+i} value={i} opponent={opponent} />)
+  const firstRow = [0,1,2,3,4,5,6,7,8,9,10]
+    .map(i => <Box key={'-0'+i} value={i} opponent={opponent} />)
   board.push(<div key={-1} className='row'>{firstRow}</div>)
 
   for (let i = 0; i < 10; i++) {
-    const row = [0,1,2,3,4,5,6,7,8,9].map(j => <Box key={''+i+j} box={getBox(i,j)} opponent={opponent} />)
-    board.push(<div key={i} className='row'>{[<Box key={i} value={numberToChar(i+1)} opponent={opponent} />, ...row]}</div>)
+    const row = [0,1,2,3,4,5,6,7,8,9]
+      .map(j => <Box key={''+i+j} box={getBox(i,j)} opponent={opponent} />)
+    board.push(<div key={i} className='row'>
+      {[<Box key={i} value={numberToChar(i+1)} opponent={opponent} />, ...row]}
+    </div>)
   }
   
   return <div className='board'>
