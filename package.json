@@ -3,21 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^5.2.4",
     "classnames": "^2.2.6",
     "mobx": "^5.11.0",
     "mobx-react-lite": "^1.4.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
-    "stylus": "^0.54.5"
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "yarn run build-css && react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "build-css": "stylus src/ --out src/",
-    "watch-css": "yarn run build-css && stylus -w src/ --out src/"
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject"
   },
   "eslintConfig": {
     "extends": "react-app"
