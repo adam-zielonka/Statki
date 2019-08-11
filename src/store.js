@@ -84,16 +84,15 @@ export class Board {
 
   setShips(generate = true) {
     if(generate) this.ships = generateShips()
-    // eslint-disable-next-line no-console
-    console.log(`%c Board: ${this.color} `, `color: white; background-color: ${this.color}`)
-    // eslint-disable-next-line no-console
-    console.log(this.ships.map(m => m.join('-')).join('\n'))
     for (const ship of this.ships) {
       for (const mast of ship) {
         const [x, y] = getXY(mast)
         this.boxes[x][y].ship = true
       }
     }
+    const boxColor = this.color === 'red' ? '\uD83D\uDFE5' : '\uD83D\uDFE9'
+    // eslint-disable-next-line no-console
+    console.log(this.boxes.map(row => row.map(box => box.ship ? boxColor : '\u2B1C').join('')).join('\n'))
   }
 }
 
