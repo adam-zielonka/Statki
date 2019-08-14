@@ -101,29 +101,22 @@ function setShip(masts, board) {
   return result
 }
 
-export function generateShips(){
-  let ships
+function getNewBoard() {
+  const board = []
+  for (let i = 0; i < 10; i++) {
+    board[i] = []
+    for (let j = 0; j < 10; j++) {
+      board[i][j] = false
+    }
+  }
+  return board
+}
+
+export function generateShips() {
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const board = []
-    for (let i = 0; i < 10; i++) {
-      board[i] = []
-      for (let j = 0; j < 10; j++) {
-        board[i][j] = false
-      }
-    }
-    ships = []
-    ships.push(setShip(4, board)); if(ships[ships.length-1].length < 1) continue
-    ships.push(setShip(3, board)); if(ships[ships.length-1].length < 1) continue
-    ships.push(setShip(3, board)); if(ships[ships.length-1].length < 1) continue
-    ships.push(setShip(2, board)); if(ships[ships.length-1].length < 1) continue
-    ships.push(setShip(2, board)); if(ships[ships.length-1].length < 1) continue
-    ships.push(setShip(2, board)); if(ships[ships.length-1].length < 1) continue
-    ships.push(setShip(1, board)); if(ships[ships.length-1].length < 1) continue
-    ships.push(setShip(1, board)); if(ships[ships.length-1].length < 1) continue
-    ships.push(setShip(1, board)); if(ships[ships.length-1].length < 1) continue
-    ships.push(setShip(1, board)); if(ships[ships.length-1].length < 1) continue
-    break
+    const board = getNewBoard()
+    const ships = [4,3,3,2,2,2,1,1,1,1].map(masts => setShip(masts, board))
+    if(!ships.find(ship => ship.length < 1)) return ships
   }
-  return ships
 }
