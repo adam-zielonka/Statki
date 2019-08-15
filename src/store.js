@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 import { decorate, observable, action } from 'mobx'
-import { generateShips, getXY, getRandom, sleep, shuffle } from './utils'
+import { generateShips, getXY, getRandom, sleep, shuffle, printBoardInConsole } from './utils'
 
 export class Board {
   constructor({color, opponent, ships}) {
@@ -90,9 +90,7 @@ export class Board {
         this.boxes[x][y].ship = true
       }
     }
-    const boxColor = this.color === 'red' ? '\uD83D\uDFE5' : '\uD83D\uDFE9'
-    // eslint-disable-next-line no-console
-    console.log(this.boxes.map(row => row.map(box => box.ship ? boxColor : '\u2B1C').join('')).join('\n'))
+    printBoardInConsole(this.boxes, this.color)
   }
 }
 

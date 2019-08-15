@@ -120,3 +120,9 @@ export function generateShips() {
     if(!ships.find(ship => ship.length < 1)) return ships
   }
 }
+
+export function printBoardInConsole(boxes, color = 'red') {
+  const boxColor = color === 'red' ? '\uD83D\uDFE5' : '\uD83D\uDFE9'
+  // eslint-disable-next-line no-console
+  console.log(boxes.map(row => row.map(box => box.ship ? boxColor : '\u2B1C').join('')).join('\n'))
+}
