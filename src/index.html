@@ -5,10 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Statki</title>
+  <link href="./index.styl" rel="stylesheet">
 </head>
 
 <body>
-  <div id="board"></div>
+  <div id="app">
+    <div class='label'>
+      <span id="ai">COMPUTER</span>
+      <input type='button' id='newGame' value='New Game' />
+      <span id="pl">PLAYER</span>
+    </div>
+    <div class="boards" id="boards"></div>
+  </div>
   <script src="./index.js"></script>
 </body>
 

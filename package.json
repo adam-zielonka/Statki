@@ -2,8 +2,12 @@
   "name": "statki",
   "version": "0.1.0",
   "dependencies": {
+    "classnames": "^2.2.6",
     "eslint": "^6.8.0",
     "parcel": "^1.12.4"
+  },
+  "devDependencies": {
+    "stylus": "^0.54.7"
   },
   "scripts": {
     "start": "yarn dev",
@@ -11,9 +15,6 @@
     "build": "yarn clear && parcel build ./src/index.html",
     "clear": "rm -fr ./dist",
     "lint": "eslint ."
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
