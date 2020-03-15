@@ -2,6 +2,7 @@
   "name": "statki",
   "version": "0.1.0",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
     "eslint": "^6.8.0",
     "parcel": "^1.12.4"
