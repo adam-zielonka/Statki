@@ -1,0 +1,44 @@
+stages:
+- build
+- test
+- deploy
+
+pages:
+  image: node:latest
+  stage: build
+  script:
+    - yarn
+    - yarn build
+    - mv dist public
+  cache:
+    paths:
+    - node_modules
+    - .cache
+  artifacts:
+    expire_in: 1 week
+    paths:
+    - public
+  only:
+    - master
+  except:
+    - schedules
+
+lint:
+  image: node:latest
+  stage: build
+  allow_failure: true
+  script:
+    - yarn
+    - yarn lint
+  cache:
+    paths:
+    - node_modules
+  except:
+    - schedules
+
+include:
+  - template: Dependency-Scanning.gitlab-ci.yml
+
+dependency_scanning:
+  only:
+    - schedules
