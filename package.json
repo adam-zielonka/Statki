@@ -1,26 +1,21 @@
 {
   "name": "statki",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
-    "@craco/craco": "^5.2.4",
+    "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.6",
-    "mobx": "^5.11.0",
-    "mobx-react-lite": "^1.4.1",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.2"
+    "eslint": "^6.8.0",
+    "parcel": "^1.12.4"
+  },
+  "devDependencies": {
+    "stylus": "^0.54.7"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "craco eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "start": "yarn dev",
+    "dev": "parcel ./src/index.html",
+    "build": "yarn clear && parcel build ./src/index.html",
+    "clear": "rm -fr ./dist",
+    "lint": "eslint ."
   },
   "browserslist": {
     "production": [
@@ -33,5 +28,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "eslintIgnore": [
+    "node_modules",
+    "dist",
+    "cache"
+  ]
 }

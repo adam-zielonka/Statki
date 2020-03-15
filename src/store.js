@@ -1,9 +1,13 @@
-import { createContext, useContext } from 'react'
-import { decorate, observable, action } from 'mobx'
 import { generateShips, getXY, getRandom, sleep, shuffle, printBoardInConsole } from './utils'
+
+function bind(methods, object) {
+  methods.forEach(method => object[method] = object[method].bind(object))
+}
 
 export class Board {
   constructor({color, opponent, ships}) {
+    bind(['getBox','setShips','shoot','setMishits','isShipDown'], this)
+
     this.color = color
     this.opponent = opponent
     this.ships = ships
@@ -94,16 +98,6 @@ export class Board {
   }
 }
 
-decorate(Board, {
-  boxes: observable,
-  getBox: action.bound,
-  setShips: action.bound,
-  shoot: action.bound,
-  setMishits: action.bound,
-  isShipDown: action.bound,
-  opponent: observable,
-})
-
 export class AI {
   constructor(board, fire) {
     this.board = board
@@ -179,6 +173,8 @@ export class AI {
 
 export class Store {
   constructor() {
+    bind(['fire', 'changePlayer', 'newGame'], this)
+
     this.activePlayer = true
     this.gameOver = true
     this.playerRed = new Board({ color: 'red', opponent: true, ships: [
@@ -192,17 +188,26 @@ export class Store {
       ['B7','B8','B9','C7','D7','E7','E8','E9','F9','G9','H9','I9','I8','I7']
     ]})
     this.ai = new AI(this.playerRed, this.fire)
+    this.register = []
+  }
+
+  update() {
+    this.register.forEach(u => u())
   }
 
   changePlayer() {
+    this.update()
     this.activePlayer = !this.activePlayer
     if(!this.activePlayer) this.ai.play()
+    this.update()
   }
 
   fire(box) {
     const [result, won] = box.shoot()
+    this.update()
     if(won) {
       this.gameOver = true
+      this.update()
       return false
     } else {
       if(!result) {this.changePlayer(); return false}
@@ -219,19 +224,12 @@ export class Store {
     this.playerGreen.reset()
     this.playerGreen.opponent = false
     this.ai.reset()
+    this.update()
   }
 }
 
-decorate(Store, {
-  fire: action.bound,
-  changePlayer: action.bound,
-  activePlayer: observable,
-  gameOver: observable,
-  newGame: action.bound,
-})
-
-const store = createContext(new Store())
+const store = new Store()
 
 export function useStore() {
-  return useContext(store)
+  return store
 }
