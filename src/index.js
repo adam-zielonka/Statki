@@ -1,4 +1,3 @@
-import 'babel-polyfill'
 import { numberToChar } from './utils'
 import { useStore } from './store'
 import cx from 'classnames'

@@ -1,11 +1,11 @@
+image: node:14.20.1
+
 stages:
-- build
 - test
 - deploy
 
 pages:
-  image: node:latest
-  stage: build
+  stage: deploy
   script:
     - yarn
     - yarn build
@@ -19,13 +19,10 @@ pages:
     paths:
     - public
   only:
-    - master
-  except:
-    - schedules
+    - main
 
 lint:
-  image: node:latest
-  stage: build
+  stage: test
   allow_failure: true
   script:
     - yarn
@@ -33,12 +30,3 @@ lint:
   cache:
     paths:
     - node_modules
-  except:
-    - schedules
-
-include:
-  - template: Dependency-Scanning.gitlab-ci.yml
-
-dependency_scanning:
-  only:
-    - schedules
