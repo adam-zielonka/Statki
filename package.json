@@ -13,7 +13,7 @@
   "scripts": {
     "start": "yarn dev",
     "dev": "parcel ./src/index.html",
-    "build": "yarn clear && parcel build ./src/index.html",
+    "build": "yarn clear && parcel build --public-url . ./src/index.html",
     "clear": "rm -fr ./dist",
     "lint": "eslint ."
   },
