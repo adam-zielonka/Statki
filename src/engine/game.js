@@ -1,5 +1,5 @@
-import { AI } from "./engine/ai";
-import { Board } from "./engine/board";
+import { AI } from "./ai";
+import { Board } from "./board";
 
 export class Game {
   constructor() {
