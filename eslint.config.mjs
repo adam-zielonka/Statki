@@ -1,5 +1,5 @@
-import globals from 'globals'
-import js from '@eslint/js'
+import globals from "globals";
+import js from "@eslint/js";
 
 export default [
   {
@@ -10,12 +10,12 @@ export default [
   js.configs.recommended,
   {
     rules: {
-      'indent': ['warn', 2, { 'SwitchCase': 0 }],
-      'linebreak-style': ['warn', 'unix'],
-      'quotes': ['warn', 'single'],
-      'semi': ['warn', 'never'],
-      'max-len': ['warn', { 'code': 120 }],
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      "indent": ["warn", 2, { "SwitchCase": 1 }],
+      "linebreak-style": ["warn", "unix"],
+      "quotes": ["warn", "double"],
+      "semi": ["warn", "always"],
+      "max-len": ["warn", { "code": 120 }],
+      "no-console": ["warn", { allow: ["warn", "error"] }],
     }
   }
-]
+];
