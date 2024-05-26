@@ -1,14 +1,8 @@
 import { AI } from "./engine/ai";
 import { Board } from "./engine/board";
 
-function bind(methods, object) {
-  methods.forEach(method => object[method] = object[method].bind(object));
-}
-
-export class Store {
+export class Game {
   constructor() {
-    bind(["fire", "changePlayer", "newGame"], this);
-
     this.activePlayer = true;
     this.gameOver = true;
     this.playerRed = new Board({ color: "red", opponent: true, ships: [
@@ -25,18 +19,18 @@ export class Store {
     this.register = [];
   }
 
-  update() {
+  update = () => {
     this.register.forEach(u => u());
-  }
+  };
 
-  changePlayer() {
+  changePlayer = () => {
     this.update();
     this.activePlayer = !this.activePlayer;
     if (!this.activePlayer) this.ai.play();
     this.update();
-  }
+  };
 
-  fire(box) {
+  fire = (box) => {
     const [result, won] = box.shoot();
     this.update();
     if (won) {
@@ -47,9 +41,9 @@ export class Store {
       if (!result) {this.changePlayer(); return false;}
       else return true;
     }
-  }
+  };
 
-  newGame() {
+  newGame = () => {
     // eslint-disable-next-line no-console
     console.clear();
     this.activePlayer = true;
@@ -59,11 +53,7 @@ export class Store {
     this.playerGreen.opponent = false;
     this.ai.reset();
     this.update();
-  }
+  };
 }
 
-const store = new Store();
-
-export function useStore() {
-  return store;
-}
+export const game = new Game();
