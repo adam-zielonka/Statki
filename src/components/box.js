@@ -1,31 +1,28 @@
 import { useStore } from "../store";
-import { cx } from "../utils";
 
-export function Box({ value, opponent, box={ship: false, shot: true}}) {
+export function Box({ value, opponent, box={ship: false, shot: true} }) {
   const { fire, register } = useStore();
   const input = document.createElement("input");
   input.type = "button";
   input.value = value || "";
-  
-  function onClickHandler() {
-    if(box) fire(box);
-  }
-  input.addEventListener("click", onClickHandler);
+  input.addEventListener("click", () => box && fire(box));
   
   function update() {
     const { activePlayer, gameOver } = useStore();
     const isActive = opponent === !activePlayer;
-    const classes = {
-      black: (opponent || gameOver) && !box.shot && box.ship, 
-      orange: value && isActive,
-      lightblue: box.shot && !box.ship,
-      [box.color]: box.shot && box.ship,
-    };
+    const classes = ["box"];
+
+    if ((opponent || gameOver) && !box.shot && box.ship) classes.push("black");
+    if (value && isActive) classes.push("orange");
+    if (box.shot && !box.ship) classes.push("lightblue");
+    if (box.shot && box.ship) classes.push(box.color);
     
-    input.className = cx("box", classes);
-    input.disabled = !!(box.shot || !isActive || gameOver || opponent);
+    input.className = classes.join(" ");
+    input.disabled = box.shot || !isActive || gameOver || opponent;
   };
+
   register.push(update);
   update();
+  
   return input;
 }

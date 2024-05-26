@@ -125,17 +125,3 @@ export function printBoardInConsole(boxes, color = "red") {
   // eslint-disable-next-line no-console
   console.log(boxes.map(row => row.map(box => box.ship ? boxColor : "\u2B1C").join("")).join("\n"));
 }
-
-export function cx(...classes) {
-  const cssClasses = [];
-  for (const cssClass of classes) {
-    if (typeof cssClass === "string") {
-      cssClasses.push(cssClass);
-    } else if (typeof cssClass === "object") {
-      for (const [key, value] of Object.entries(cssClass)) {
-        if (value) cssClasses.push(key);
-      }
-    }
-  }
-  return cssClasses.join(" ");
-}
