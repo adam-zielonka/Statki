@@ -113,7 +113,6 @@ function getNewBoard() {
 }
 
 export function generateShips() {
-  // eslint-disable-next-line no-constant-condition
   while (true) {
     const board = getNewBoard()
     const ships = [4,3,3,2,2,2,1,1,1,1].map(masts => setShip(masts, board))
