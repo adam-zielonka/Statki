@@ -32,19 +32,19 @@ export class Store {
   changePlayer() {
     this.update();
     this.activePlayer = !this.activePlayer;
-    if(!this.activePlayer) this.ai.play();
+    if (!this.activePlayer) this.ai.play();
     this.update();
   }
 
   fire(box) {
     const [result, won] = box.shoot();
     this.update();
-    if(won) {
+    if (won) {
       this.gameOver = true;
       this.update();
       return false;
     } else {
-      if(!result) {this.changePlayer(); return false;}
+      if (!result) {this.changePlayer(); return false;}
       else return true;
     }
   }

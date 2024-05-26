@@ -56,22 +56,22 @@ export function shuffle(a) {
 function setShip(masts, board) {
   var result = [];
   var tries = 0;
-  while(tries<100) {
+  while (tries<100) {
     ++tries;
     result = [];
     let x = getRandom(0, 10);
     let y = getRandom(0, 10);
     let vh = getRandom(0, 2);
-    if(vh === 0) {
-      if(x+masts > 10) continue;
+    if (vh === 0) {
+      if (x+masts > 10) continue;
       let ok = true;
       for (let i = 0; i < masts; i++) {
-        if(x+i<10 && board[x+i][y]) ok = false;
+        if (x+i<10 && board[x+i][y]) ok = false;
       }
-      if(!ok) continue;
+      if (!ok) continue;
       for (let i = -1; i < masts+1; i++) {
         for (let j = -1; j <= 1; j++) {
-          if(x+i>=0 && y+j>=0 && x+i<10 && y+j<10) board[x+i][y+j] = true;
+          if (x+i>=0 && y+j>=0 && x+i<10 && y+j<10) board[x+i][y+j] = true;
         }
       }
       for (let i = 0; i < masts; i++) {
@@ -80,15 +80,15 @@ function setShip(masts, board) {
       tries = 0;
       break;
     } else {
-      if(y+masts > 10) continue;
+      if (y+masts > 10) continue;
       let ok = true;
       for (let i = 0; i < masts; i++) {
-        if(y+i<10 && board[x][y+i]) ok = false;
+        if (y+i<10 && board[x][y+i]) ok = false;
       }
-      if(!ok) continue;
+      if (!ok) continue;
       for (let j = -1; j < masts+1; j++) {
         for (let i = -1; i <= 1; i++) {
-          if(x+i>=0 && y+j>=0 && x+i<10 && y+j<10) board[x+i][y+j] = true;
+          if (x+i>=0 && y+j>=0 && x+i<10 && y+j<10) board[x+i][y+j] = true;
         }
       }
       for (let i = 0; i < masts; i++) {
@@ -116,7 +116,7 @@ export function generateShips() {
   while (true) {
     const board = getNewBoard();
     const ships = [4,3,3,2,2,2,1,1,1,1].map(masts => setShip(masts, board));
-    if(!ships.find(ship => ship.length < 1)) return ships;
+    if (!ships.find(ship => ship.length < 1)) return ships;
   }
 }
 

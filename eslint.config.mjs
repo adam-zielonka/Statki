@@ -16,6 +16,7 @@ export default [
       "semi": ["warn", "always"],
       "max-len": ["warn", { "code": 120 }],
       "no-console": ["warn", { allow: ["warn", "error"] }],
+      "keyword-spacing": ["warn", { "before": true, "after": true }],
     }
   }
 ];

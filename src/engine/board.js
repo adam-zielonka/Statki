@@ -32,7 +32,7 @@ export class Board {
   isShipDown = (ship) => {
     for (let mast of ship) {
       const [x, y] = getXY(mast);
-      if(!this.boxes[x][y].shot) return false;
+      if (!this.boxes[x][y].shot) return false;
     }
     return true;
   };
@@ -41,7 +41,7 @@ export class Board {
     let won = true;
     this.boxes[x][y].shot = true;
     for (let ship of this.ships) {
-      if(this.isShipDown(ship)) {
+      if (this.isShipDown(ship)) {
         this.shipDown(ship);
       } else {
         won = false;
@@ -58,21 +58,21 @@ export class Board {
   };
   
   setMishits = (i, j) => {
-    if(i-1>=0 && j-1>=0) 
+    if (i-1>=0 && j-1>=0) 
       this.boxes[i-1][j-1].shot = true;
-    if(i-1>=0) 
+    if (i-1>=0) 
       this.boxes[i-1][j].shot = true;
-    if(i-1>=0 && j+1<10) 
+    if (i-1>=0 && j+1<10) 
       this.boxes[i-1][j+1].shot = true;
-    if(j+1<10) 
+    if (j+1<10) 
       this.boxes[i][j+1].shot = true;
-    if(j-1>=0) 
+    if (j-1>=0) 
       this.boxes[i][j-1].shot = true;
-    if(i+1<10 && j+1<10) 
+    if (i+1<10 && j+1<10) 
       this.boxes[i+1][j+1].shot = true;
-    if(i+1<10 && j-1>=0) 
+    if (i+1<10 && j-1>=0) 
       this.boxes[i+1][j-1].shot = true;
-    if(i+1<10) 
+    if (i+1<10) 
       this.boxes[i+1][j].shot = true;
   };
   
@@ -81,7 +81,7 @@ export class Board {
   };
   
   setShips = (generate = true) => {
-    if(generate) this.ships = generateShips();
+    if (generate) this.ships = generateShips();
     for (const ship of this.ships) {
       for (const mast of ship) {
         const [x, y] = getXY(mast);
