@@ -1,6 +1,6 @@
 import { numberToChar } from './utils'
 import { useStore } from './store'
-import cx from 'classnames'
+import { cx } from './utils'
 
 function Box({ value, opponent, box={ship: false, shot: true} }) {
   const { fire, register } = useStore()
