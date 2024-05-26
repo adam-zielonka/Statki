@@ -54,8 +54,8 @@ export function shuffle(a) {
 }
 
 function setShip(masts, board) {
-  var result = [];
-  var tries = 0;
+  let result = [];
+  let tries = 0;
   while (tries<100) {
     ++tries;
     result = [];
@@ -77,7 +77,6 @@ function setShip(masts, board) {
       for (let i = 0; i < masts; i++) {
         result.push(`${numberToChar(x+i+1)}${y+1}`);
       }
-      tries = 0;
       break;
     } else {
       if (y+masts > 10) continue;
@@ -94,7 +93,6 @@ function setShip(masts, board) {
       for (let i = 0; i < masts; i++) {
         result.push(`${numberToChar(x+1)}${y+i+1}`);
       }
-      tries = 0;
       break;
     }
   }
